@@ -27,7 +27,7 @@ The issues will have a chatty style, where the topics are discussed, explained a
 
 You should do what the task implies and then mark it as done. When you've checked all tasks in an issue, you close it and head on to the next.
 
-When we show screen dumps or screen recordings we sometimes collapse them, to make the text more readable: Click on the black triangle to toggle expand/collapse like shown in the example here below:
+When we show screen dumps or screen recordings we sometimes collapse them, to make the text more readable: Click on the black triangle ▶️ to toggle expand/collapse like shown in the example here below:
 
 <details><summary>👇 Details...</summary>
 <img width="300" alt="image" src="https://github.com/thetechcollective/dx-intro/assets/155492/b6efcbae-6455-4a00-9d52-b7cb736306e5">
