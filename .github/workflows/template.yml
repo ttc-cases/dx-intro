@@ -45,7 +45,7 @@ jobs:
       - name: "Copying issues over from template repo"
         run: |
           gh extension install thetechcollective/gh-cpissues
-          gh cpissues thetechcollective/dx-intro --label Template
+          gh cpissues thetechcollective/dx-intro --label template
       
       - name: "Set the README"
         run: |

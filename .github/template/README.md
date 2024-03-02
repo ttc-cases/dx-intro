@@ -6,7 +6,7 @@ This repo is a copy of the template repo at [thetechcollective/dx-intro](https:/
 
 #### 👉 Work those issues 👈
 
-<img width="100" align="left" alt="image" src="https://user-images.githubusercontent.com/155492/219313640-1328aefb-7695-41d2-bbef-5c5ffe6ab079.png"> This repo has some pre-defined issues copied over from the template. Simply work the issues.<br clear="both">
+<img width="100" align="left" alt="image" src="https://user-images.githubusercontent.com/155492/219313640-1328aefb-7695-41d2-bbef-5c5ffe6ab079.png"> This repo has some pre-defined copied over from the template. Simply work the [issues](../../issues/).<br clear="both">
 
 #### 👉 If you need help 👈
 
