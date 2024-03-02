@@ -1,23 +1,19 @@
 name: Initial commit workflow
 
-# triggering on '**' is a bit of a trick; There is no specific event that fires on a repo being created from a template
-# '**' triggers on anything. So it requires special measures later.
 on:
   push:
     branches:
       - '**' 
-# This is required for the gh cli to run with the sufficient credentials
+
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 permissions:
   checks:   write
-  actions:  write   # We must cancel the rigger after the first (and only) run
-  contents: write   # We must update the README.md and push back to origin
-  issues:   write   # We must copy issues over from the template
+  actions:  write   
+  contents: write   
+  issues:   write   
 
-# Due to the aggressive '**' we can only allow one run at a time. 
-# and any new jobs can not be allowed to stop ongoing jobs.
 concurrency:
   group: "cpissues"
   cancel-in-progress: false
@@ -26,7 +22,6 @@ jobs:
   cpissues:
     name: "Initial commit only"
     runs-on: ubuntu-latest
-    # This is the commit message automatically generated for the first commit when a repo is treated off a template - this is our cue.
     if: ${{ contains(github.event.head_commit.message, 'Initial commit') }}
     steps:       
       - name: "Checkout"
