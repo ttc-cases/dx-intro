@@ -1,50 +1,59 @@
 name: Initial commit workflow
 
+# triggering on '**' is a bit of a trick; There is no specific event that fires on a repo being created from a template
+# '**' triggers on anything. So it requires special measures later.
 on:
   push:
     branches:
       - '**' 
-
+# This is required for the gh cli to run with the sufficient credentials
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 permissions:
-  checks: write
-  actions: write
-  contents: write
-  issues: write
+  checks:   write
+  actions:  write   # We must cancel the rigger after the first (and only) run
+  contents: write   # We must update the README.md and push back to origin
+  issues:   write   # We must copy issues over from the template
+
+# Due to the aggressive '**' we can only allow one run at a time. 
+# and any new jobs can not be allowed to stop ongoing jobs.
+concurrency:
+  group: "cpissues"
+  cancel-in-progress: false
 
 jobs:
   cpissues:
     name: "Initial commit only"
     runs-on: ubuntu-latest
+    # This is the commit message automatically generated for the first commit when a repo is treated off a template - this is our cue.
     if: ${{ contains(github.event.head_commit.message, 'Initial commit') }}
     steps:       
       - name: "Checkout"
         uses: actions/checkout@v3
         
-      - name: "Raise semaphore or quit"
+      - name: "Raise semaphore (cancel workflow) or quit"
         run: |
           if $(gh workflow disable template.yml); then
             echo ::notice title=Workflow successfully disabled::This also works as a raised semaphore - parallel workflow runs will see it and cancel
           else
             echo "::warning title=Another job got here first::This room is crowded - I'm outta here!"
-            curl -X POST \
-              -H "Accept: application/vnd.github.v3+json" \
-              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-              https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel
-              exit 1
+            gh api -X POST /repos/{owner}/{repo}/actions/runs/${{ github.run_id }}/cancel
+            exit 1
           fi
           
-      - name: "Copying issues over"
-        run: .github/template/cpissues.sh
+      - name: "Copying issues over from template repo"
+        run: |
+          gh extension install thetechcollective/gh-cpissues
+          gh cpissues thetechcollective/dx-intro --label Template
       
       - name: "Set the README"
         run: |
           cp .github/template/README.md .
+          rm -rf .github/template/
           git config --global user.email "actions.bot@github.com"
           git config --global user.name "The GitHub Action Bot"
-          git add .
+          git add -A
           git commit -m "Updated the README"
           git push origin
 
