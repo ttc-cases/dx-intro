@@ -12,6 +12,7 @@ But first a shot intro to the semantics in these issues: Each issue starts with 
 
 It could look like this:
 
+> [!NOTE]
 > **☝️  Learning goals in this issue**
 > - Browse the repo content in the GitHub web based editor (≈VS Code)
 > - Turn on _sync of settings_ on your user profile. 
